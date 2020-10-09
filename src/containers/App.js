@@ -2,6 +2,7 @@ import React from 'react'
 //import axios from 'axios'
 import CardList from '../components/CardList'
 import SearchBox from '../components/SearcBox'
+import ErrorBoundaries from '../components/ErrorBoundary'
 import Scroll from '../components/Scroll'
 import './App.css'
 
@@ -62,7 +63,9 @@ class App extends React.Component {
 				<SearchBox searchChange={this.onSearchChange} />
 				<hr style={{ backgroundColor: 'cyan', border: 'none', height: '1px' }} />
 				<Scroll>
-					{robotsList}
+					<ErrorBoundaries>
+						{robotsList}
+					</ErrorBoundaries>
 				</Scroll>
 			</div>
 		)
