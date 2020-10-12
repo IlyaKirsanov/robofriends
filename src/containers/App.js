@@ -10,12 +10,6 @@ import { connect } from 'react-redux'
 
 class App extends React.Component {
 
-	state = {
-		robots: []
-	}
-
-
-
 	// async componentDidMount(){
 	// 	const users = await axios('https://jsonplaceholder.typicode.com/users')
 	// 	this.setState((prevState) => {
@@ -24,33 +18,18 @@ class App extends React.Component {
 	// }
 
 	componentDidMount() {
-		fetch('https://jsonplaceholder.typicode.com/users')
-			.then(response => {
-				return response.json()
-			})
-			.then(responseData => {
-				setTimeout(() => {
-					this.setState((prevState) => {
-						return {
-							...prevState,
-							robots: responseData
-						}
-					})
-				}, 1000)
-			})
+		this.props.onRequestRobots();
 	}
 
 	render() {
-
-		const { robots } = this.state;
-		const { searchField, onSearchChange } = this.props;
+		const { searchField, onSearchChange, robots, isPending, error } = this.props;
 		const filteredRobots = robots.filter((robot) => {
 			return robot.name.toLowerCase().includes(searchField.toLowerCase())
 		})
 
 		let robotsList = null;
 
-		if (!robots.length) {
+		if (!isPending) { 
 			robotsList = <h2>Loading Data ... </h2>
 		} else {
 			robotsList = <CardList robots={filteredRobots} />
@@ -73,13 +52,17 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
 	return {
-		searchField: state.searchField
+		searchField: state.searchRobots.searchField,
+		robots: state.requestRobots.robots,
+		isPending: state.requestRobots.isPending,
+		error: state.requestRobots.error
 	}
 }
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onSearchChange: (event) => dispatch(actions.setSearchField(event.target.value))
+		onSearchChange: (event) => dispatch(actions.setSearchField(event.target.value)),
+		onRequestRobots: () => dispatch(actions.requestRobots())
 	}
 }
 
