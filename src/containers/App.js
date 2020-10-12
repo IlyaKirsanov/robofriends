@@ -5,20 +5,16 @@ import SearchBox from '../components/SearcBox'
 import ErrorBoundaries from '../components/ErrorBoundary'
 import Scroll from '../components/Scroll'
 import './App.css'
+import * as actions from '../redux/actions'
+import { connect } from 'react-redux'
 
 class App extends React.Component {
 
 	state = {
-		robots: [],
-		searchField: ''
+		robots: []
 	}
 
-	onSearchChange = (event) => {
-		const inputValue = event.target.value
-		this.setState((prevState) => {
-			return { ...prevState, searchField: inputValue }
-		})
-	}
+
 
 	// async componentDidMount(){
 	// 	const users = await axios('https://jsonplaceholder.typicode.com/users')
@@ -45,13 +41,16 @@ class App extends React.Component {
 	}
 
 	render() {
-		const filteredRobots = this.state.robots.filter((robot) => {
-			return robot.name.toLowerCase().includes(this.state.searchField.toLowerCase())
+
+		const { robots } = this.state;
+		const { searchField, onSearchChange } = this.props;
+		const filteredRobots = robots.filter((robot) => {
+			return robot.name.toLowerCase().includes(searchField.toLowerCase())
 		})
 
 		let robotsList = null;
 
-		if (!this.state.robots.length) {
+		if (!robots.length) {
 			robotsList = <h2>Loading Data ... </h2>
 		} else {
 			robotsList = <CardList robots={filteredRobots} />
@@ -60,7 +59,7 @@ class App extends React.Component {
 		return (
 			<div className="tc">
 				<h1>RoboFriends</h1>
-				<SearchBox searchChange={this.onSearchChange} />
+				<SearchBox searchChange={onSearchChange} />
 				<hr style={{ backgroundColor: 'cyan', border: 'none', height: '1px' }} />
 				<Scroll>
 					<ErrorBoundaries>
@@ -72,4 +71,16 @@ class App extends React.Component {
 	}
 }
 
-export default App;
+const mapStateToProps = state => {
+	return {
+		searchField: state.searchField
+	}
+}
+
+const mapDispatchToProps = dispatch => {
+	return {
+		onSearchChange: (event) => dispatch(actions.setSearchField(event.target.value))
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
