@@ -34,13 +34,13 @@ export const requestRobots = (state = initialStateRobots, action) => {
 			return {
 				...state,
 				robots: action.payload,
-				isPanding: false
+				isPending: false
 			}
 		case actionTypes.REQUEST_ROBOTS_FAILED:
 			return {
 				...state,
 				error: action.payload,
-				isPanding: false
+				isPending: false
 			}
 		default:
 			return state
