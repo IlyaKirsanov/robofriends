@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render MainPage without crashing 1`] = `
+<div
+  className="tc"
+>
+  <h1>
+    RoboFriends
+  </h1>
+  <SearchBox />
+  <CounterButton
+    color="cyan"
+  />
+  <hr
+    style={
+      Object {
+        "backgroundColor": "cyan",
+        "border": "none",
+        "height": "1px",
+      }
+    }
+  />
+  <Scroll>
+    <ErrorBoundary>
+      <h2>
+        Loading Data ... 
+      </h2>
+    </ErrorBoundary>
+  </Scroll>
+</div>
+`;
